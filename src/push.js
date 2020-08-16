@@ -15,7 +15,7 @@ const convertToTreeBlobs = async ({ owner, repo, images }) => {
   for await (const image of images) {
     const encodedImage = await fs.readFile(image.path, { encoding: "base64" });
 
-    const blob = await api.git.createBlob({
+    const blob = await github.git.createBlob({
       owner,
       repo,
       content: encodedImage,
