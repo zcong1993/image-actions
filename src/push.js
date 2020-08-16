@@ -59,7 +59,19 @@ const createPr = async (optimisedImages, markdown) => {
   const baseRef = GITHUB_REF
   const destRef = GITHUB_REF + '-image-bot'
 
+  // always try delete destRef first
+  await github.git.deleteRef({
+    owner,
+    repo,
+    ref: toUpdateRef(destRef)
+  })
+
+  console.log('delete dest branch')
+
+  // get branch last commit sha as process branch base
   const ls = await getLastSha(owner, repo, toUpdateRef(baseRef))
+  console.log('get last commit')
+
   // create branch
   const { data: ref } = await github.git.createRef({
     owner,
@@ -68,6 +80,7 @@ const createPr = async (optimisedImages, markdown) => {
     sha: ls
   })
   console.log('create new branch')
+  
   // create blobs
   const treeBlobs = await convertToTreeBlobs({
     owner,
@@ -115,6 +128,8 @@ const createPr = async (optimisedImages, markdown) => {
     body: markdown,
     title: '[Image Bot] Optimised images'
   })
+
+  console.log('create pr')
 }
 
 const runPush = async () => {
