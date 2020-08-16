@@ -1,0 +1,21 @@
+name: Docker Build Base Image and Push
+
+on: 
+  push:
+    paths:
+      - Dockerfile.base
+
+jobs:
+  dockerBuildPush:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          username: zcong
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: zcong/github-image-actions-base
+          dockerfile: ./Dockerfile.base
+          tags: latest
