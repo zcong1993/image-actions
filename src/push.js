@@ -61,12 +61,14 @@ const createPr = async (optimisedImages, markdown) => {
 
   console.log('ref ', baseRef, destRef)
 
-  // always try delete destRef first
-  await github.git.deleteRef({
-    owner,
-    repo,
-    ref: toUpdateRef(destRef)
-  })
+  try {
+    // always try delete destRef first
+    await github.git.deleteRef({
+      owner,
+      repo,
+      ref: toUpdateRef(destRef)
+    })
+  } catch(err) {}
 
   console.log('delete dest branch')
 
