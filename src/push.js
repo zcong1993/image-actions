@@ -59,6 +59,8 @@ const createPr = async (optimisedImages, markdown) => {
   const baseRef = GITHUB_REF
   const destRef = GITHUB_REF + '-image-bot'
 
+  console.log('ref ', baseRef, destRef)
+
   // always try delete destRef first
   await github.git.deleteRef({
     owner,
